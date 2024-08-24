@@ -13,10 +13,10 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private TaskRepository taskRepository;
 
-    private User findById(Long id){
+
+
+    public User findById(Long id){
         Optional<User> user = this.userRepository.findById(id);
         return user.orElseThrow(() -> new RuntimeException(
                 "Usuário não encontrado. Id:" + id + ", Tipo: " + User.class.getName()
@@ -24,11 +24,12 @@ public class UserService {
     }
     @Transactional //Usar anotação para operações de criação/exclusão no BD
     public User createUser(User newUser){
+        newUser.setId(null);
         newUser = this.userRepository.save(newUser);
-        this.taskRepository.saveAll(newUser.getTasks());//Se o usuário possuir tasks, as salva
         return newUser;
 
     }
+    //Busca o usuário antigo, atualiza e salva
     @Transactional
     public User userUpdate(User user) {
         User newUser = findById(user.getId());
