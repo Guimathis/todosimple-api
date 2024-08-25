@@ -31,7 +31,7 @@ public class UserService {
     }
     //Busca o usuário antigo, atualiza e salva
     @Transactional
-    public User userUpdate(User user) {
+    public User updateUser(User user) {
         User newUser = findById(user.getId());
         newUser.setPassword(user.getPassword());
         return this.userRepository.save(newUser);
