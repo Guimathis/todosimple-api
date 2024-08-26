@@ -1,34 +1,38 @@
 package com.JavaApiRest.todosimple.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.*;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = User.TABLE_NAME)
 public class User {
     protected static final String TABLE_NAME = "user";
 
-    public interface CreateUser{};
-    public interface UpdateUser{};
+    public interface CreateUser {
+    }
+
+    public interface UpdateUser {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)  
+    @Column(name = "id", unique = true)
     private Long id;
 
     @Column(name = "username", length = 100, nullable = false, unique = true)
     @NotBlank(groups = CreateUser.class)
-    @Size(groups= CreateUser.class, min = 2, max = 100)
+    @Size(groups = CreateUser.class, min = 2, max = 100)
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -38,70 +42,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private List<Task> tasks = new ArrayList<Task>();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Task> tasks = new ArrayList<>();
 
-    public User() {}
-
-    public User(Long id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @JsonIgnore
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof User user)) return false;
-        User other = (User) obj;
-        if (this.id == null)
-            if (other.id != null)
-                return false;
-            else if (!this.id.equals(other.id))
-                return false;
-        return Objects.equals(this.id, other.id) && Objects.equals(this.username, other.username)
-                && Objects.equals(this.password, other.password);
-
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-        return result;
-    }
 }
