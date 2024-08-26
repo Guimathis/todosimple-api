@@ -3,6 +3,8 @@ package com.JavaApiRest.todosimple.services;
 import com.JavaApiRest.todosimple.models.Task;
 import com.JavaApiRest.todosimple.models.User;
 import com.JavaApiRest.todosimple.repositories.TaskRepository;
+import com.JavaApiRest.todosimple.services.exceptions.DataBindingViolationException;
+import com.JavaApiRest.todosimple.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class TaskService {
     //todo Este método não leva em consideração se uma task está associada à um usuário
     public Task findById(Long id){
         Optional<Task> task = this.taskRepository.findById(id);
-        return task.orElseThrow(() -> new RuntimeException(
+        return task.orElseThrow(() -> new ObjectNotFoundException(
                 "Tarefa não encontrada! id: " + id + "Tipo: " + Task.class.getName()
         ));
     }
@@ -58,7 +60,7 @@ public class TaskService {
         try {
             this.taskRepository.deleteById(id);
         }catch (Exception e){
-            throw new RuntimeException(
+            throw new DataBindingViolationException(
                     "Não foi possível deletar a tarefa! "
             );
 

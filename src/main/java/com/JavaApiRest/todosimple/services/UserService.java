@@ -3,6 +3,8 @@ package com.JavaApiRest.todosimple.services;
 import com.JavaApiRest.todosimple.models.User;
 import com.JavaApiRest.todosimple.repositories.TaskRepository;
 import com.JavaApiRest.todosimple.repositories.UserRepository;
+import com.JavaApiRest.todosimple.services.exceptions.DataBindingViolationException;
+import com.JavaApiRest.todosimple.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +20,7 @@ public class UserService {
 
     public User findById(Long id){
         Optional<User> user = this.userRepository.findById(id);
-        return user.orElseThrow(() -> new RuntimeException(
+        return user.orElseThrow(() -> new ObjectNotFoundException (
                 "Usuário não encontrado. Id:" + id + ", Tipo: " + User.class.getName()
         ));
     }
@@ -42,7 +44,7 @@ public class UserService {
         try {
             this.userRepository.deleteById(id);
         }catch (Exception e){
-            throw new RuntimeException("Não foi possivel deletar o Usuário " + user.getUsername() + ", pois há tarefas ligadas a ele." );
+            throw new DataBindingViolationException("Não foi possivel deletar o Usuário " + user.getUsername() + ", pois há tarefas ligadas a ele." );
         }
     }
 
