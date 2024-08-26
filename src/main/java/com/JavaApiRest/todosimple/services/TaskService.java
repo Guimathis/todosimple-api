@@ -8,6 +8,7 @@ import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,12 @@ public class TaskService {
                 "Tarefa não encontrada! id: " + id + "Tipo: " + Task.class.getName()
         ));
     }
+
+    public List<Task> findAllByUserId (Long userId){
+        return this.taskRepository.findByUser_Id(userId);
+    }
+
+
     @Transactional
     public Task createTask(Task newTask){
         User user = this.userService.findById(newTask.getUser().getId());
@@ -38,13 +45,13 @@ public class TaskService {
 
     //Busca a task antiga, atualiza e salva
     @Transactional
-    public Task taskUpdate(Task task){
+    public Task updateTask(Task task){
         Task newTask = findById(task.getId());
         newTask.setDescription(task.getDescription());
         return this.taskRepository.save(newTask);
     }
 
-    public void deleteTasks(Long id){
+    public void deleteTask(Long id){
         Task task = findById(id);
         // Try catch não obrigatório, task não é chave estrangeira
         // try está aqui para se no futuro isso venha a ser implementado
