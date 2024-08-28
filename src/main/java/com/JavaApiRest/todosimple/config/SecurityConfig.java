@@ -32,10 +32,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable);// Desativa a proteção csrf em toda a aplicação
-        http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers(PUBLIC_MATCHERS).authenticated());
-        http.sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+            .requestMatchers(PUBLIC_MATCHERS).permitAll()
+            .anyRequest().authenticated());
+
         return http.build();
     }
 
