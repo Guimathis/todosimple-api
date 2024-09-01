@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
 @Component
 public class JWTUtil {
+
     @Value("${jwt.secret}")
     private String secret;
 
@@ -21,8 +21,6 @@ public class JWTUtil {
 
     public String generateToken(String username) {
         SecretKey key = getKeyBySecret();
-
-
         return Jwts.builder().subject(username)
                 .expiration(new Date(System.currentTimeMillis() + this.expiration))
                 .signWith(key)
@@ -33,7 +31,8 @@ public class JWTUtil {
         return Keys.hmacShaKeyFor(this.secret.getBytes());
     }
 
-    public boolean isValid(String token) {
+
+    public boolean isValidToken(String token) {
         Claims claims = getClaims(token);
         if (Objects.nonNull(claims)) {
             String username = claims.getSubject();
