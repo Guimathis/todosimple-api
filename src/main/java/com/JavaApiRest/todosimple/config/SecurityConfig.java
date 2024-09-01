@@ -1,6 +1,7 @@
 package com.JavaApiRest.todosimple.config;
 
 import com.JavaApiRest.todosimple.security.JWTAuthenticationFilter;
+import com.JavaApiRest.todosimple.security.JWTAuthorizationFilter;
 import com.JavaApiRest.todosimple.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -61,6 +62,7 @@ public class SecurityConfig {
 
 
         http.addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(this.authenticationManager, this.jwtUtil, this.userDetailsService));
 
         return http.build();
     }

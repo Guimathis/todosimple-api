@@ -49,10 +49,5 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader("Authorization", "Bearer " + token);
         response.addHeader("access-control-expose-headers", "Authorization");
     }
-    // TODO Problema atual:
-    //  Aplicação executa, com 2 endpoins para post, /user e /login
-    //  o /user funciona para post, porém não retorna o token de usuário
-    //  /login nem chega a inserir o usuário e executa um select no banco de dados
-    //  ?Não deveria ser um insert?
-    //
+
 }
