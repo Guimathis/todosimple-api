@@ -2,15 +2,19 @@ package com.JavaApiRest.todosimple.services;
 
 import com.JavaApiRest.todosimple.models.Enums.ProfileEnum;
 import com.JavaApiRest.todosimple.models.User;
-import com.JavaApiRest.todosimple.repositories.TaskRepository;
 import com.JavaApiRest.todosimple.repositories.UserRepository;
+import com.JavaApiRest.todosimple.security.UserSpringSecurity;
+import com.JavaApiRest.todosimple.services.exceptions.AuthorizationException;
 import com.JavaApiRest.todosimple.services.exceptions.DataBindingViolationException;
 import com.JavaApiRest.todosimple.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,16 +27,28 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    // Testa se o usuário está logado e seu token está valido
+//    e se tem permissão de admin e está procurando pelo id dele
+    public User findById(Long id) {
+        UserSpringSecurity userSpringSecurity = authenticated();
+        if (!Objects.nonNull(userSpringSecurity)
+                || !userSpringSecurity.hasRole(ProfileEnum.ADMIN)
+                && !id.equals(userSpringSecurity.getId()))
+            throw new AuthorizationException("Acesso negado!");
 
-
-    public User findById(Long id){
         Optional<User> user = this.userRepository.findById(id);
-        return user.orElseThrow(() -> new ObjectNotFoundException (
-                "Usuário não encontrado. Id:" + id + ", Tipo: " + User.class.getName()
-        ));
+        return user.orElseThrow(() -> new ObjectNotFoundException(
+                "Usuário não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
     }
+
+    public User findByUsername(String username) {
+        Optional<User> user = Optional.ofNullable(this.userRepository.findByUsername(username));
+        return user.orElseThrow(() -> new ObjectNotFoundException(
+                "Usuário não encontrado! Username: " + username + ", Tipo: "));
+    }
+
     @Transactional //Usar anotação para operações de criação/exclusão no BD
-    public User createUser(User obj){
+    public User createUser(User obj) {
         obj.setId(null);
         obj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
         obj.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
@@ -40,6 +56,7 @@ public class UserService {
         return obj;
 
     }
+
     //Busca o usuário antigo, atualiza e salva
     @Transactional
     public User updateUser(User user) {
@@ -48,13 +65,21 @@ public class UserService {
         return this.userRepository.save(newUser);
     }
 
-    public void deleteUser(Long id){
+    public void deleteUser(Long id) {
         User user = findById(id);
         try {
             this.userRepository.deleteById(id);
-        }catch (Exception e){
-            throw new DataBindingViolationException("Não foi possivel deletar o Usuário " + user.getUsername() + ", pois há tarefas ligadas a ele." );
+        } catch (Exception e) {
+            throw new DataBindingViolationException("Não foi possivel deletar o Usuário " + user.getUsername() + ", pois há tarefas ligadas a ele.");
         }
     }
 
+    public UserSpringSecurity authenticated() {
+        try {
+            User user = this.userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+            return new UserSpringSecurity(user.getId(), user.getUsername(), user.getPassword(), user.getProfiles());
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
