@@ -2,11 +2,14 @@ package com.JavaApiRest.todosimple.services;
 
 import com.JavaApiRest.todosimple.models.Enums.ProfileEnum;
 import com.JavaApiRest.todosimple.models.User;
+import com.JavaApiRest.todosimple.models.dto.UserCreateDTO;
+import com.JavaApiRest.todosimple.models.dto.UserUpdateDTO;
 import com.JavaApiRest.todosimple.repositories.UserRepository;
 import com.JavaApiRest.todosimple.security.UserSpringSecurity;
 import com.JavaApiRest.todosimple.services.exceptions.AuthorizationException;
 import com.JavaApiRest.todosimple.services.exceptions.DataBindingViolationException;
 import com.JavaApiRest.todosimple.services.exceptions.ObjectNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -81,5 +84,19 @@ public class UserService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public User fromDTO(@Valid UserCreateDTO obj){
+        User user = new User();
+        user.setUsername(obj.getUsername());
+        user.setPassword(obj.getPassword());
+        return user;
+    }
+
+    public User fromDTO(@Valid UserUpdateDTO obj) {
+        User user = new User();
+        user.setId(obj.getId());
+        user.setPassword(obj.getPassword());
+        return user;
     }
 }

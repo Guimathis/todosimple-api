@@ -1,6 +1,7 @@
 package com.JavaApiRest.todosimple.controllers;
 
 import com.JavaApiRest.todosimple.models.Task;
+import com.JavaApiRest.todosimple.models.projections.TaskProjection;
 import com.JavaApiRest.todosimple.services.TaskService;
 import com.JavaApiRest.todosimple.services.UserService;
 import jakarta.validation.Valid;
@@ -29,8 +30,8 @@ public class TaskController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<Task>> findAllByUser(){
-        List<Task> obj = this.taskService.findAllByUser();
+    public ResponseEntity<List<TaskProjection>> findAllByUser(){
+        List<TaskProjection> obj = this.taskService.findAllByUser();
         return ResponseEntity.ok().body(obj);
 
     }

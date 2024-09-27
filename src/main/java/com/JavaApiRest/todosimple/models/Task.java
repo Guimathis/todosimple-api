@@ -5,14 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+@Entity
 
-@Setter
-@Getter
+@Table(name = Task.TABLE_NAME)
+
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@Entity
-@Table(name = Task.TABLE_NAME)
+@Data
 public class Task {
     protected static final String TABLE_NAME = "task";
     @Id

@@ -1,6 +1,8 @@
 package com.JavaApiRest.todosimple.controllers;
 
 import com.JavaApiRest.todosimple.models.User;
+import com.JavaApiRest.todosimple.models.dto.UserCreateDTO;
+import com.JavaApiRest.todosimple.models.dto.UserUpdateDTO;
 import com.JavaApiRest.todosimple.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.JavaApiRest.todosimple.models.User.CreateUser;
-import com.JavaApiRest.todosimple.models.User.UpdateUser;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -28,19 +28,20 @@ public class UserController {
     }
 
     @PostMapping
-    @Validated(CreateUser.class)
-    public ResponseEntity<Void> createUser(@Valid @RequestBody User obj){
-        this.userService.createUser(obj);
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserCreateDTO obj){
+        User user = this.userService.fromDTO(obj);
+        User newUser = this.userService.createUser(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(obj.getId()).toUri();
+                .path("/{id}").buildAndExpand(newUser.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
-    @Validated(UpdateUser.class)
-    public ResponseEntity<Void> updateUser(@Valid @RequestBody User obj, @PathVariable Long id){
+    public ResponseEntity<Void> updateUser(@Valid @RequestBody UserUpdateDTO obj, @PathVariable Long id){
         obj.setId(id);
-        this.userService.updateUser(obj);
+        User user = this.userService.fromDTO(obj);
+
+        this.userService.updateUser(user);
         return ResponseEntity.noContent().build();
     }
 
