@@ -1,0 +1,10 @@
+**/target/
+**/docs/
+**/view/
+**/.git
+**/README.md
+**/CITATION.cff
+**/LICENSE
+**/.editorconfig
+**/.idea
+**/HELP.md

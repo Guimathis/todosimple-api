@@ -27,8 +27,18 @@
         <url/>
     </scm>
     <properties>
-        <java.version>22</java.version>
+        <java.version>17</java.version>
     </properties>
+    <packaging>jar</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <finalName>todosimpleapp</finalName>
+    </build>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -76,7 +86,6 @@
             <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -87,7 +96,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
             <version>3.3.3</version>
         </dependency>
-
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -109,17 +117,5 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
