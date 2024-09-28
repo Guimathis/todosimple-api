@@ -13,21 +13,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+
 @Entity
 @Table(name = User.TABLE_NAME)
 public class User {
     protected static final String TABLE_NAME = "user";
 
-    public interface CreateUser {
-    }
-
-    public interface UpdateUser {
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,14 +29,14 @@ public class User {
     private Long id;
 
     @Column(name = "username", length = 100, nullable = false, unique = true)
-    @NotBlank(groups = CreateUser.class)
-    @Size(groups = CreateUser.class, min = 2, max = 100)
+    @NotBlank(message = "Username não pode estar vazio.")
+    @Size(min = 2, max = 100)
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false, unique = true)
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class})
-    @Size(groups = {CreateUser.class, UpdateUser.class}, min = 8)
+    @NotBlank(message = "Password não pode estar vazio.")
+    @Size(min = 8)
     private String password;
 
     @OneToMany(mappedBy = "user")
@@ -55,10 +49,11 @@ public class User {
     @Column(name = "profile", nullable = false)
     private Set<Integer> profiles = new HashSet<>();
 
-    public Set<ProfileEnum> getProfiles(){
+    public Set<ProfileEnum> getProfiles() {
         return this.profiles.stream().map(x -> ProfileEnum.toEnum(x)).collect(Collectors.toSet());
     }
-    public void addProfile(ProfileEnum profileEnum){
-            this.profiles.add(profileEnum.getCode());
+
+    public void addProfile(ProfileEnum profileEnum) {
+        this.profiles.add(profileEnum.getCode());
     }
 }

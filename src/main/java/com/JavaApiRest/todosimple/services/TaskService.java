@@ -3,6 +3,7 @@ package com.JavaApiRest.todosimple.services;
 import com.JavaApiRest.todosimple.models.Enums.ProfileEnum;
 import com.JavaApiRest.todosimple.models.Task;
 import com.JavaApiRest.todosimple.models.User;
+import com.JavaApiRest.todosimple.models.projections.TaskProjection;
 import com.JavaApiRest.todosimple.repositories.TaskRepository;
 import com.JavaApiRest.todosimple.security.UserSpringSecurity;
 import com.JavaApiRest.todosimple.services.exceptions.AuthorizationException;
@@ -40,7 +41,7 @@ public class TaskService {
         return task;
     }
 
-    public List<Task> findAllByUser() {
+    public List<TaskProjection> findAllByUser() {
         UserSpringSecurity userSpringSecurity = userService.authenticated();
         if (Objects.isNull(userSpringSecurity))
             throw new AuthorizationException("Faça login para acessar tarefas!");
