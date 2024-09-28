@@ -12,7 +12,6 @@ import com.JavaApiRest.todosimple.services.exceptions.ObjectNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,10 +61,11 @@ public class UserService {
 
     //Busca o usuário antigo, atualiza e salva
     @Transactional
-    public User updateUser(User user) {
-        User newUser = findById(user.getId());
-        newUser.setPassword(this.bCryptPasswordEncoder.encode(newUser.getPassword()));
-        return this.userRepository.save(newUser);
+    public User update(User obj) {
+        User newObj = findById(obj.getId());
+        newObj.setPassword(obj.getPassword());
+        newObj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
+        return this.userRepository.save(newObj);
     }
 
     public void deleteUser(Long id) {
