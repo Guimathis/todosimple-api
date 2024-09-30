@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
@@ -55,6 +56,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
             .requestMatchers(PUBLIC_MATCHERS).permitAll()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
             .anyRequest().authenticated()).authenticationManager(authenticationManager);
 
         http.sessionManagement(session -> session

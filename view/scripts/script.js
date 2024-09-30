@@ -3,11 +3,17 @@ const tasksEndpoint = "http://localhost:8080/task/user";
 function hideLoader() {
   document.getElementById("loading").style.display = "none";
 }
-
+function diplayName(){
+  if (localStorage.getItem("username")) {
+        const username = localStorage.getItem('username');
+        document.getElementById('tasks-header').textContent = `Tarefas de ${username}`;
+      }
+}
 function show(tasks) {
+  diplayName()
   let tab = `<thead>
-            <th scope="col">#</th>
-            <th scope="col">Description</th>
+            <th scope="col">Tarefa</th>
+            <th scope="col">Descrição</th>
         </thead>`;
 
   for (let task of tasks) {
@@ -39,7 +45,7 @@ async function getTasks() {
 
 document.addEventListener("DOMContentLoaded", function (event) {
   if (!localStorage.getItem("Authorization"))
-    window.location = "/view/login.html";
+    window.location = "login.html";
 });
 
 getTasks();

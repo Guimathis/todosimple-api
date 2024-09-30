@@ -19,6 +19,7 @@ async function login() {
   let key = "Authorization";
   let token = response.headers.get(key);
   window.localStorage.setItem(key, token);
+  window.localStorage.setItem("username", username)
 
   if (response.ok) {
     showToast("#okToast");
@@ -27,7 +28,7 @@ async function login() {
   }
 
   window.setTimeout(function () {
-    window.location = "/view/index.html";
+    window.location = "index.html";
   }, 2000);
 }
 

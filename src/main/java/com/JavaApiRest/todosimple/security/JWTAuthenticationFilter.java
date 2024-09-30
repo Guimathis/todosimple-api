@@ -34,7 +34,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userCredentials.getUsername(),
                     userCredentials.getPassword(), new ArrayList<>());
-
             return this.authenticationManager.authenticate(authToken);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -46,6 +45,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserSpringSecurity userSpringSecurity = (UserSpringSecurity) authentication.getPrincipal();
         String username = userSpringSecurity.getUsername();
         String token = this.jwtUtil.generateToken(username);
+        response.addHeader("Access-Control-Allow-Origin", "*");
+//        response.addHeader("Access-Control-Allow-Headers", "*");
+//        response.addHeader("Access-Control-Allow-Methods", "*");
         response.addHeader("Authorization", "Bearer " + token);
         response.addHeader("access-control-expose-headers", "Authorization");
     }

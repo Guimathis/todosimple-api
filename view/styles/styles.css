@@ -1,0 +1,45 @@
+
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 20px;
+}
+
+.header p {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.header button {
+    font-size: 1rem;
+}
+
+.table-container {
+    margin-top: 20px;
+}
+
+.spinner-border {
+    margin-top: 50px;
+    color: #007bff;
+}
+
+.sign-out-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sign-out-btn i {
+    font-size: 1.2rem;
+}
+
+.actions i {
+    cursor: pointer;
+}
