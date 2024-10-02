@@ -34,7 +34,7 @@ Is a simple application where a user can sign up, realize log in to receive an a
 
 ---
 
-## ⤵ Instruções de utilização
+## ⤵ Utilization instructions
 
 These instructions will get you up and running with a copy of the project on your local machine for testing, development, and learning purposes.
 Prerequisites:
@@ -81,7 +81,7 @@ Prerequisites:
   ```bash
   $ mvn clean install
   ```
-- Passo 2.3.1: Iniciar a aplicação Spring Boot utilizando o Maven:
+- step 2.3.1: Initalize the spring boot application using Maven:
   ```bash
   $ mvn spring-boot:run
   ```
