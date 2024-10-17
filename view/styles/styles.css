@@ -4,6 +4,9 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.container{
+    width: 750px;
+}
 .header {
     display: flex;
     justify-content: space-between;

@@ -33,15 +33,13 @@ public class TaskController {
         return ResponseEntity.ok().body(obj);
 
     }
-    @CrossOrigin( origins = "*", maxAge = 3600)
     @PostMapping
     @Validated
     public ResponseEntity<Void> createTask(@Valid @RequestBody Task obj){
         this.taskService.createTask(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
-        System.out.println("passou");
-        return ResponseEntity.created(uri).header("Access-Control-Allow-Origin","*").build();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
