@@ -20,8 +20,6 @@ import java.util.List;
 public class TaskController {
     @Autowired
     private TaskService taskService;
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> findbyId(@PathVariable Long id){
@@ -35,14 +33,15 @@ public class TaskController {
         return ResponseEntity.ok().body(obj);
 
     }
-
+    @CrossOrigin( origins = "*", maxAge = 3600)
     @PostMapping
     @Validated
     public ResponseEntity<Void> createTask(@Valid @RequestBody Task obj){
         this.taskService.createTask(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        System.out.println("passou");
+        return ResponseEntity.created(uri).header("Access-Control-Allow-Origin","*").build();
     }
 
     @PutMapping("/{id}")

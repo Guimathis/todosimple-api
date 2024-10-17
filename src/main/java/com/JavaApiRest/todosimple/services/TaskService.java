@@ -10,7 +10,6 @@ import com.JavaApiRest.todosimple.services.exceptions.AuthorizationException;
 import com.JavaApiRest.todosimple.services.exceptions.DataBindingViolationException;
 import com.JavaApiRest.todosimple.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +23,6 @@ public class TaskService {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private DefaultSslBundleRegistry sslBundleRegistry;
 
     public Task findById(Long id) {
         Task task = this.taskRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(
